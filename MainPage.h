@@ -17,6 +17,10 @@ public:
 
 private:
     Ui_MainWindow ui;
+
+private:
+    // 美化calendarWidget
+    void beautifyCalendarWidget();
 };
 
 
