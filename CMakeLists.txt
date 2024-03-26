@@ -14,10 +14,16 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(untitled1 main.cpp
-        MainPage.cpp
-        MainPage.h)
+
+
+
+add_subdirectory(Pages)
+
+add_executable(untitled1 main.cpp)
+
 target_link_libraries(untitled1
+        MainPage
+        MaskPage
         Qt::Core
         Qt::Gui
         Qt::Widgets

@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
+      <x>350</x>
+      <y>500</y>
       <width>171</width>
       <height>51</height>
      </rect>
@@ -30,10 +30,10 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>0</y>
-      <width>311</width>
-      <height>281</height>
+      <x>540</x>
+      <y>330</y>
+      <width>261</width>
+      <height>221</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -59,8 +59,20 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuOpenCV">
+    <property name="title">
+     <string>OpenCV</string>
+    </property>
+    <addaction name="actionmask"/>
+   </widget>
+   <addaction name="menuOpenCV"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionmask">
+   <property name="text">
+    <string>Mask</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

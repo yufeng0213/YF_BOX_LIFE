@@ -5,11 +5,15 @@
 #include "MainPage.h"
 #include <iostream>
 
+#include "MaskPage.h"
+
 MainPage::MainPage(QWidget *parent): QMainWindow(parent) {
     ui.setupUi(this);
 
     setWindowIcon(QIcon("../Icon/Farmer-female.png"));
     beautifyCalendarWidget();
+
+    connect(ui.actionmask, &QAction::triggered, this, &MainPage::on_actionmask_triggered);
 
 
 }
@@ -46,4 +50,9 @@ void MainPage::beautifyCalendarWidget(){
                          "}";
 
     ui.calendarWidget->setStyleSheet(styleSheet);
+}
+
+void MainPage::on_actionmask_triggered(){
+    MaskPage *maskPage = new MaskPage();
+    maskPage->show();
 }

@@ -5,7 +5,8 @@
 #ifndef UNTITLED1_MAINPAGE_H
 #define UNTITLED1_MAINPAGE_H
 
-#include "UI/ui_untitled.h"
+#include "../UI/ui_untitled.h"
+
 
 class MainPage : public QMainWindow{
 
@@ -18,9 +19,14 @@ public:
 private:
     Ui_MainWindow ui;
 
+
 private:
     // 美化calendarWidget
     void beautifyCalendarWidget();
+
+
+private slots:
+    void on_actionmask_triggered();
 };
 
 
