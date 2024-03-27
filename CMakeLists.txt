@@ -14,7 +14,11 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
+set(OpenCV_DIR "E:/OpenCV490/build/x64/vc16/lib")
 
+find_package(OpenCV REQUIRED)
+
+include_directories("E:/OpenCV490/build/include")
 
 
 add_subdirectory(Pages)

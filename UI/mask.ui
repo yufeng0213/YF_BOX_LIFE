@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>MaskWindow</class>
+ <widget class="QMainWindow" name="MaskWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>826</width>
+    <height>599</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
      <string>打开图像</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_globalMask">
+   <widget class="QPushButton" name="btn_globalMosicalAlgo1">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -37,16 +37,16 @@
      </rect>
     </property>
     <property name="text">
-     <string>全图马赛克</string>
+     <string>全图马赛克-算法1</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_maskImg">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>10</y>
-      <width>621</width>
-      <height>531</height>
+      <x>170</x>
+      <y>30</y>
+      <width>640</width>
+      <height>512</height>
      </rect>
     </property>
     <property name="text">
@@ -59,7 +59,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>826</width>
      <height>21</height>
     </rect>
    </property>

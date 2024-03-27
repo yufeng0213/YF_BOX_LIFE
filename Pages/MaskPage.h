@@ -18,10 +18,14 @@ public:
 private:
     Ui_MaskWindow uiMask;
 
+    std::string _mosicalImgPath;
+
 
 private slots:
     // 读取图片
     void on_btn_readImg_clicked();
+    // 全局马赛克算法1
+    void on_btn_globalMosicalAlgo1_clicked();
 };
 
 

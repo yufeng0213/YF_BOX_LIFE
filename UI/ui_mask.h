@@ -25,46 +25,46 @@ class Ui_MaskWindow
 public:
     QWidget *centralwidget;
     QPushButton *btn_readImg;
-    QPushButton *btn_globalMask;
+    QPushButton *btn_globalMosicalAlgo1;
     QLabel *label_maskImg;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
-    void setupUi(QMainWindow *MainWindow)
+    void setupUi(QMainWindow *MaskWindow)
     {
-        if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(800, 600);
-        centralwidget = new QWidget(MainWindow);
+        if (MaskWindow->objectName().isEmpty())
+            MaskWindow->setObjectName("MaskWindow");
+        MaskWindow->resize(826, 599);
+        centralwidget = new QWidget(MaskWindow);
         centralwidget->setObjectName("centralwidget");
         btn_readImg = new QPushButton(centralwidget);
         btn_readImg->setObjectName("btn_readImg");
         btn_readImg->setGeometry(QRect(20, 30, 121, 41));
-        btn_globalMask = new QPushButton(centralwidget);
-        btn_globalMask->setObjectName("btn_globalMask");
-        btn_globalMask->setGeometry(QRect(20, 110, 121, 41));
+        btn_globalMosicalAlgo1 = new QPushButton(centralwidget);
+        btn_globalMosicalAlgo1->setObjectName("btn_globalMosicalAlgo1");
+        btn_globalMosicalAlgo1->setGeometry(QRect(20, 110, 121, 41));
         label_maskImg = new QLabel(centralwidget);
         label_maskImg->setObjectName("label_maskImg");
-        label_maskImg->setGeometry(QRect(160, 10, 621, 531));
-        MainWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(MainWindow);
+        label_maskImg->setGeometry(QRect(170, 30, 640, 512));
+        MaskWindow->setCentralWidget(centralwidget);
+        menubar = new QMenuBar(MaskWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 800, 21));
-        MainWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(MainWindow);
+        menubar->setGeometry(QRect(0, 0, 826, 21));
+        MaskWindow->setMenuBar(menubar);
+        statusbar = new QStatusBar(MaskWindow);
         statusbar->setObjectName("statusbar");
-        MainWindow->setStatusBar(statusbar);
+        MaskWindow->setStatusBar(statusbar);
 
-        retranslateUi(MainWindow);
+        retranslateUi(MaskWindow);
 
-        QMetaObject::connectSlotsByName(MainWindow);
+        QMetaObject::connectSlotsByName(MaskWindow);
     } // setupUi
 
-    void retranslateUi(QMainWindow *MainWindow)
+    void retranslateUi(QMainWindow *MaskWindow)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        btn_readImg->setText(QCoreApplication::translate("MainWindow", "\346\211\223\345\274\200\345\233\276\345\203\217", nullptr));
-        btn_globalMask->setText(QCoreApplication::translate("MainWindow", "\345\205\250\345\233\276\351\251\254\350\265\233\345\205\213", nullptr));
+        MaskWindow->setWindowTitle(QCoreApplication::translate("MaskWindow", "MainWindow", nullptr));
+        btn_readImg->setText(QCoreApplication::translate("MaskWindow", "\346\211\223\345\274\200\345\233\276\345\203\217", nullptr));
+        btn_globalMosicalAlgo1->setText(QCoreApplication::translate("MaskWindow", "\345\205\250\345\233\276\351\251\254\350\265\233\345\205\213-\347\256\227\346\263\2251", nullptr));
         label_maskImg->setText(QString());
     } // retranslateUi
 

@@ -13,7 +13,9 @@ MainPage::MainPage(QWidget *parent): QMainWindow(parent) {
     setWindowIcon(QIcon("../Icon/Farmer-female.png"));
     beautifyCalendarWidget();
 
-    connect(ui.actionmask, &QAction::triggered, this, &MainPage::on_actionmask_triggered);
+    // 如果槽函数已经适配，不要再connect，会重复调用槽函数
+    //connect(ui.actionmask, &QAction::triggered, this, on_actionmask_triggered());
+
 
 
 }
