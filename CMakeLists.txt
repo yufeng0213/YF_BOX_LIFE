@@ -14,12 +14,12 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-set(OpenCV_DIR "E:/OpenCV490/build/x64/vc16/lib")
+set(OpenCV_DIR "E:/opencv-4.9.0/build/install")
 
 find_package(OpenCV REQUIRED)
 
-include_directories("E:/OpenCV490/build/include")
-
+include_directories("E:/opencv-4.9.0/build/install/include")
+set(QtModules Qt::Core Qt::Gui Qt::Widgets)
 
 add_subdirectory(Pages)
 
@@ -28,9 +28,7 @@ add_executable(untitled1 main.cpp)
 target_link_libraries(untitled1
         MainPage
         MaskPage
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
+        ${QtModules}
 )
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)

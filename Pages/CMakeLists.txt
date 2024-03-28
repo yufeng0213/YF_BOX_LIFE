@@ -3,10 +3,13 @@ find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
 
 # 处理OpenCV版本兼容性问题，建议指定一个期望的版本
 # 注意：这里的版本号需要根据实际情况调整
-find_package(OpenCV 4.9.0 REQUIRED)
+#find_package(OpenCV 4.9.0 REQUIRED)
 
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
 # 定义一个变量来包含所有Qt模块
 set(QtModules Qt::Core Qt::Gui Qt::Widgets)
+
+#message("OpenCV libraries: ${OpenCV_LIBS}")
 
 # 添加名为MaskPage的库，包含MaskPage.cpp文件
 add_library(MaskPage MaskPage.cpp)
