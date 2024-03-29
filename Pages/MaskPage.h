@@ -15,11 +15,15 @@ public:
 
     ~MaskPage();
 
+
+private:
+    // 新增：用于加载和显示图片的辅助函数
+    bool loadAndDisplayImage(const QString &filePath);
+
 private:
     Ui_MaskWindow uiMask;
 
     std::string _mosicalImgPath;
-
 
 private slots:
     // 读取图片
