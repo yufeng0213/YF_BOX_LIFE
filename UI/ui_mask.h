@@ -11,11 +11,16 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QFrame>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -24,8 +29,17 @@ class Ui_MaskWindow
 {
 public:
     QWidget *centralwidget;
+    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout_2;
+    QVBoxLayout *verticalLayout;
     QPushButton *btn_readImg;
+    QFrame *line;
     QPushButton *btn_globalMosicalAlgo1;
+    QFrame *line_2;
+    QHBoxLayout *horizontalLayout;
+    QLabel *label;
+    QLineEdit *lineEdit_gloMoAlgoTh;
+    QSpacerItem *verticalSpacer;
     QLabel *label_maskImg;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -37,15 +51,84 @@ public:
         MaskWindow->resize(826, 599);
         centralwidget = new QWidget(MaskWindow);
         centralwidget->setObjectName("centralwidget");
-        btn_readImg = new QPushButton(centralwidget);
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(centralwidget->sizePolicy().hasHeightForWidth());
+        centralwidget->setSizePolicy(sizePolicy);
+        horizontalLayoutWidget = new QWidget(centralwidget);
+        horizontalLayoutWidget->setObjectName("horizontalLayoutWidget");
+        horizontalLayoutWidget->setGeometry(QRect(20, 10, 791, 541));
+        horizontalLayout_2 = new QHBoxLayout(horizontalLayoutWidget);
+        horizontalLayout_2->setObjectName("horizontalLayout_2");
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName("verticalLayout");
+        btn_readImg = new QPushButton(horizontalLayoutWidget);
         btn_readImg->setObjectName("btn_readImg");
-        btn_readImg->setGeometry(QRect(20, 30, 121, 41));
-        btn_globalMosicalAlgo1 = new QPushButton(centralwidget);
+
+        verticalLayout->addWidget(btn_readImg);
+
+        line = new QFrame(horizontalLayoutWidget);
+        line->setObjectName("line");
+        line->setFrameShape(QFrame::HLine);
+        line->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout->addWidget(line);
+
+        btn_globalMosicalAlgo1 = new QPushButton(horizontalLayoutWidget);
         btn_globalMosicalAlgo1->setObjectName("btn_globalMosicalAlgo1");
-        btn_globalMosicalAlgo1->setGeometry(QRect(20, 110, 121, 41));
-        label_maskImg = new QLabel(centralwidget);
+        QSizePolicy sizePolicy1(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(btn_globalMosicalAlgo1->sizePolicy().hasHeightForWidth());
+        btn_globalMosicalAlgo1->setSizePolicy(sizePolicy1);
+
+        verticalLayout->addWidget(btn_globalMosicalAlgo1);
+
+        line_2 = new QFrame(horizontalLayoutWidget);
+        line_2->setObjectName("line_2");
+        line_2->setFrameShape(QFrame::HLine);
+        line_2->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout->addWidget(line_2);
+
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName("horizontalLayout");
+        label = new QLabel(horizontalLayoutWidget);
+        label->setObjectName("label");
+
+        horizontalLayout->addWidget(label);
+
+        lineEdit_gloMoAlgoTh = new QLineEdit(horizontalLayoutWidget);
+        lineEdit_gloMoAlgoTh->setObjectName("lineEdit_gloMoAlgoTh");
+
+        horizontalLayout->addWidget(lineEdit_gloMoAlgoTh);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer);
+
+
+        horizontalLayout_2->addLayout(verticalLayout);
+
+        label_maskImg = new QLabel(horizontalLayoutWidget);
         label_maskImg->setObjectName("label_maskImg");
-        label_maskImg->setGeometry(QRect(170, 30, 640, 512));
+        label_maskImg->setEnabled(true);
+        QSizePolicy sizePolicy2(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(label_maskImg->sizePolicy().hasHeightForWidth());
+        label_maskImg->setSizePolicy(sizePolicy2);
+        label_maskImg->setMinimumSize(QSize(640, 512));
+        label_maskImg->setMaximumSize(QSize(640, 512));
+        label_maskImg->setAutoFillBackground(false);
+
+        horizontalLayout_2->addWidget(label_maskImg);
+
         MaskWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MaskWindow);
         menubar->setObjectName("menubar");
@@ -65,6 +148,7 @@ public:
         MaskWindow->setWindowTitle(QCoreApplication::translate("MaskWindow", "MainWindow", nullptr));
         btn_readImg->setText(QCoreApplication::translate("MaskWindow", "\346\211\223\345\274\200\345\233\276\345\203\217", nullptr));
         btn_globalMosicalAlgo1->setText(QCoreApplication::translate("MaskWindow", "\345\205\250\345\233\276\351\251\254\350\265\233\345\205\213-\347\256\227\346\263\2251", nullptr));
+        label->setText(QCoreApplication::translate("MaskWindow", "\351\230\210\345\200\274\357\274\232", nullptr));
         label_maskImg->setText(QString());
     } // retranslateUi
 

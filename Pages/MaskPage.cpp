@@ -17,6 +17,9 @@ MaskPage::MaskPage(){
     uiMask.setupUi(this);
 
     setWindowIcon(QIcon("../Icon/arrow_right.png"));
+
+    uiMask.label_maskImg->setStyleSheet("QLabel{border:1px solid black;}");
+    //uiMask.label_bgLine->setStyleSheet("QLabel{border:1px solid black;}");
 }
 
 MaskPage::~MaskPage(){
@@ -66,7 +69,9 @@ bool MaskPage::loadAndDisplayImage(const QString &filePath) {
         return false;
     }
 
-    QPixmap scaledImage = image.scaled(uiMask.label_maskImg->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    QPixmap scaledImage = image.scaled(uiMask.label_maskImg->size(),
+                                       Qt::KeepAspectRatio,
+                                       Qt::SmoothTransformation);
     if (scaledImage.isNull()) {
         std::cout << "scaledImage is Null\n";
         return false;
@@ -78,6 +83,20 @@ bool MaskPage::loadAndDisplayImage(const QString &filePath) {
     return true;
 }
 
+bool isValidInt(const std::string& str,const int maxValue){
+    for(char c:str){
+        if(c < '0' || c > '9'){
+            return false;
+        }
+    }
+
+    int value = std::atoi(str.c_str());
+    if(value <= 0 || value > maxValue){
+        return false;
+    }
+
+    return true;
+}
 
 void MaskPage::on_btn_globalMosicalAlgo1_clicked(){
     // 尝试读取图片，如果失败则显示错误信息并返回
@@ -88,7 +107,19 @@ void MaskPage::on_btn_globalMosicalAlgo1_clicked(){
         return;
     }
 
-    int threshold{30};
+    if(!isValidInt(uiMask.lineEdit_gloMoAlgoTh->text().toStdString(),
+                   std::min(img.rows,img.cols))){
+        QMessageBox messageBox(this);
+        messageBox.setWindowTitle(tr("提示"));
+        messageBox.setText(tr("\n     阈值输入错误    "));
+        messageBox.setIcon(QMessageBox::Icon::Warning);
+        messageBox.exec();
+        return;
+    }
+
+    int threshold{uiMask.lineEdit_gloMoAlgoTh->text().toInt()};
+
+
     int rowLimit{img.rows / threshold};
     int rowRemain{img.rows % threshold};
     int colLimit{img.cols / threshold};
