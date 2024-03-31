@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
@@ -18,6 +19,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSlider>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QVBoxLayout>
@@ -39,6 +41,12 @@ public:
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QLineEdit *lineEdit_gloMoAlgoTh;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *label_3;
+    QComboBox *cBox_gloMoAlgo;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_2;
+    QSlider *hSlider_gloMoAlgoTh;
     QSpacerItem *verticalSpacer;
     QLabel *label_maskImg;
     QMenuBar *menubar;
@@ -108,6 +116,37 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName("horizontalLayout_4");
+        label_3 = new QLabel(horizontalLayoutWidget);
+        label_3->setObjectName("label_3");
+
+        horizontalLayout_4->addWidget(label_3);
+
+        cBox_gloMoAlgo = new QComboBox(horizontalLayoutWidget);
+        cBox_gloMoAlgo->setObjectName("cBox_gloMoAlgo");
+
+        horizontalLayout_4->addWidget(cBox_gloMoAlgo);
+
+
+        verticalLayout->addLayout(horizontalLayout_4);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName("horizontalLayout_3");
+        label_2 = new QLabel(horizontalLayoutWidget);
+        label_2->setObjectName("label_2");
+
+        horizontalLayout_3->addWidget(label_2);
+
+        hSlider_gloMoAlgoTh = new QSlider(horizontalLayoutWidget);
+        hSlider_gloMoAlgoTh->setObjectName("hSlider_gloMoAlgoTh");
+        hSlider_gloMoAlgoTh->setOrientation(Qt::Horizontal);
+
+        horizontalLayout_3->addWidget(hSlider_gloMoAlgoTh);
+
+
+        verticalLayout->addLayout(horizontalLayout_3);
+
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -149,6 +188,8 @@ public:
         btn_readImg->setText(QCoreApplication::translate("MaskWindow", "\346\211\223\345\274\200\345\233\276\345\203\217", nullptr));
         btn_globalMosicalAlgo1->setText(QCoreApplication::translate("MaskWindow", "\345\205\250\345\233\276\351\251\254\350\265\233\345\205\213-\347\256\227\346\263\2251", nullptr));
         label->setText(QCoreApplication::translate("MaskWindow", "\351\230\210\345\200\274\357\274\232", nullptr));
+        label_3->setText(QCoreApplication::translate("MaskWindow", "\345\205\250\345\261\200\347\256\227\346\263\225\357\274\232", nullptr));
+        label_2->setText(QCoreApplication::translate("MaskWindow", "\351\230\210\345\200\274\357\274\232", nullptr));
         label_maskImg->setText(QString());
     } // retranslateUi
 

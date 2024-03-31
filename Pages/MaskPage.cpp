@@ -20,6 +20,10 @@ MaskPage::MaskPage(){
 
     uiMask.label_maskImg->setStyleSheet("QLabel{border:1px solid black;}");
     //uiMask.label_bgLine->setStyleSheet("QLabel{border:1px solid black;}");
+
+    connect(uiMask.hSlider_gloMoAlgoTh, SIGNAL(valueChanged(int)),
+            this, SLOT(on_hSlider_gloMoAlgoTh_valueChanged(int)));
+
 }
 
 MaskPage::~MaskPage(){
@@ -98,6 +102,81 @@ bool isValidInt(const std::string& str,const int maxValue){
     return true;
 }
 
+cv::Mat globalMosicalAlgoOne(cv::Mat& srcImg,const int threshold){
+
+    cv::Mat dstImg(cv::Size(srcImg.cols,srcImg.rows),srcImg.type());
+    if(srcImg.empty()){
+        return dstImg;
+    }
+
+    if(threshold <= 0){
+        cv::cvtColor(srcImg,dstImg,cv::COLOR_RGB2BGR);
+        return dstImg;
+    }
+
+    int rowLimit{srcImg.rows / threshold};
+    int rowRemain{srcImg.rows % threshold};
+    int colLimit{srcImg.cols / threshold};
+    int colRemain{srcImg.cols % threshold};
+
+    // 优化边界处理
+    bool isRowRemain = (rowRemain != 0);
+    bool isColRemain = (colRemain != 0);
+
+    std::cout<<"threshold: "<<threshold<<"\n";
+    for(int row{0}; row < rowLimit * threshold; row += threshold) {
+        for(int col{0}; col < colLimit * threshold; col += threshold) {
+            // 使用区域变换进行优化
+            cv::Mat patch = dstImg(cv::Rect(col, row, threshold, threshold));
+            cv::Vec3b centerPixel = srcImg.at<cv::Vec3b>(row + threshold / 2, col + threshold / 2);
+
+            for(int irow{0}; irow < patch.rows; ++irow) {
+                for(int icol{0}; icol < patch.cols; ++icol) {
+                    cv::Vec3b& pixel = patch.at<cv::Vec3b>(irow, icol);
+                    pixel[0] = centerPixel[2];
+                    pixel[1] = centerPixel[1];
+                    pixel[2] = centerPixel[0];
+                }
+            }
+        }
+    }
+
+    // 如果存在剩余行或列，手动处理
+    if (isRowRemain) {
+        for(int col{0}; col < colLimit * threshold; col += threshold) {
+            cv::Mat patch = dstImg(cv::Rect(col, rowLimit * threshold, threshold, rowRemain));
+            cv::Vec3b centerPixel = srcImg.at<cv::Vec3b>(rowLimit * threshold + rowRemain / 2, col + threshold / 2);
+
+            for(int irow{0}; irow < patch.rows; ++irow) {
+                for(int icol{0}; icol < patch.cols; ++icol) {
+                    cv::Vec3b& pixel = patch.at<cv::Vec3b>(irow, icol);
+                    pixel[0] = centerPixel[2];
+                    pixel[1] = centerPixel[1];
+                    pixel[2] = centerPixel[0];
+                }
+            }
+        }
+    }
+
+    if (isColRemain) {
+        for(int row{0}; row < rowLimit * threshold; row += threshold) {
+            cv::Mat patch = dstImg(cv::Rect(colLimit * threshold, row, colRemain, threshold));
+            cv::Vec3b centerPixel = srcImg.at<cv::Vec3b>(row + threshold / 2, colLimit * threshold + colRemain / 2);
+
+            for(int irow{0}; irow < patch.rows; ++irow) {
+                for(int icol{0}; icol < patch.cols; ++icol) {
+                    cv::Vec3b& pixel = patch.at<cv::Vec3b>(irow, icol);
+                    pixel[0] = centerPixel[2];
+                    pixel[1] = centerPixel[1];
+                    pixel[2] = centerPixel[0];
+                }
+            }
+        }
+    }
+
+    return dstImg;
+}
+
 void MaskPage::on_btn_globalMosicalAlgo1_clicked(){
     // 尝试读取图片，如果失败则显示错误信息并返回
     cv::Mat img = cv::imread(_mosicalImgPath.c_str());
@@ -119,67 +198,30 @@ void MaskPage::on_btn_globalMosicalAlgo1_clicked(){
 
     int threshold{uiMask.lineEdit_gloMoAlgoTh->text().toInt()};
 
+    cv::Mat dstImg = globalMosicalAlgoOne(img,threshold);
 
-    int rowLimit{img.rows / threshold};
-    int rowRemain{img.rows % threshold};
-    int colLimit{img.cols / threshold};
-    int colRemain{img.cols % threshold};
 
-    // 优化边界处理
-    bool isRowRemain = (rowRemain != 0);
-    bool isColRemain = (colRemain != 0);
 
-    for(int row{0}; row < rowLimit * threshold; row += threshold) {
-        for(int col{0}; col < colLimit * threshold; col += threshold) {
-            // 使用区域变换进行优化
-            cv::Mat patch = img(cv::Rect(col, row, threshold, threshold));
-            cv::Vec3b centerPixel = img.at<cv::Vec3b>(row + threshold / 2, col + threshold / 2);
+    QImage image(dstImg.data, dstImg.cols, dstImg.rows,
+                 dstImg.step, QImage::Format_RGB888);
+    QPixmap pixmap = QPixmap::fromImage(image);
+    uiMask.label_maskImg->setPixmap(pixmap);
+}
 
-            for(int irow{0}; irow < patch.rows; ++irow) {
-                for(int icol{0}; icol < patch.cols; ++icol) {
-                    cv::Vec3b& pixel = patch.at<cv::Vec3b>(irow, icol);
-                    pixel[0] = centerPixel[2];
-                    pixel[1] = centerPixel[1];
-                    pixel[2] = centerPixel[0];
-                }
-            }
-        }
+void MaskPage::on_hSlider_gloMoAlgoTh_valueChanged(const int value){
+    std::cout<<"changed value : "<<value<<"\n";
+    cv::Mat img = cv::imread(_mosicalImgPath.c_str());
+    if (img.empty()) {
+        // 显示错误信息
+        std::cerr << "无法读取图像：" << _mosicalImgPath << std::endl;
+        return;
     }
 
-    // 如果存在剩余行或列，手动处理
-    if (isRowRemain) {
-        for(int col{0}; col < img.cols; col += threshold) {
-            cv::Mat patch = img(cv::Rect(col, rowLimit * threshold, threshold, rowRemain));
-            cv::Vec3b centerPixel = img.at<cv::Vec3b>(rowLimit * threshold + rowRemain / 2, col + threshold / 2);
+    int threshold = value * 0.01 * std::min(img.rows,img.cols);
+    cv::Mat dstImg = globalMosicalAlgoOne(img,threshold);
 
-            for(int irow{0}; irow < patch.rows; ++irow) {
-                for(int icol{0}; icol < patch.cols; ++icol) {
-                    cv::Vec3b& pixel = patch.at<cv::Vec3b>(irow, icol);
-                    pixel[0] = centerPixel[2];
-                    pixel[1] = centerPixel[1];
-                    pixel[2] = centerPixel[0];
-                }
-            }
-        }
-    }
-
-    if (isColRemain) {
-        for(int row{0}; row < img.rows; row += threshold) {
-            cv::Mat patch = img(cv::Rect(colLimit * threshold, row, colRemain, threshold));
-            cv::Vec3b centerPixel = img.at<cv::Vec3b>(row + threshold / 2, colLimit * threshold + colRemain / 2);
-
-            for(int irow{0}; irow < patch.rows; ++irow) {
-                for(int icol{0}; icol < patch.cols; ++icol) {
-                    cv::Vec3b& pixel = patch.at<cv::Vec3b>(irow, icol);
-                    pixel[0] = centerPixel[2];
-                    pixel[1] = centerPixel[1];
-                    pixel[2] = centerPixel[0];
-                }
-            }
-        }
-    }
-
-    QImage image(img.data, img.cols, img.rows, img.step, QImage::Format_RGB888);
+    QImage image(dstImg.data, dstImg.cols, dstImg.rows,
+                 dstImg.step, QImage::Format_RGB888);
     QPixmap pixmap = QPixmap::fromImage(image);
     uiMask.label_maskImg->setPixmap(pixmap);
 }

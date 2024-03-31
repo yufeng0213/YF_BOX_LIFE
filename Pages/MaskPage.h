@@ -30,6 +30,8 @@ private slots:
     void on_btn_readImg_clicked();
     // 全局马赛克算法1
     void on_btn_globalMosicalAlgo1_clicked();
+    // 全局阈值拉杆
+    void on_hSlider_gloMoAlgoTh_valueChanged(const int value);
 };
 
 
