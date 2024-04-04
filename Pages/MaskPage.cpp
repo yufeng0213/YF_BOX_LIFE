@@ -12,6 +12,9 @@
 #include <QMessageBox>
 
 #include <qdebug.h>
+
+#include <QMouseEvent>
+
 MaskPage::MaskPage(){
 
     uiMask.setupUi(this);
@@ -24,12 +27,16 @@ MaskPage::MaskPage(){
     connect(uiMask.hSlider_gloMoAlgoTh, SIGNAL(valueChanged(int)),
             this, SLOT(on_hSlider_gloMoAlgoTh_valueChanged(int)));
 
+    uiMask.cBox_gloMoAlgo->addItem("全局算法1");
+    uiMask.cBox_gloMoAlgo->addItem("全局算法1");
+
+
+
 }
 
 MaskPage::~MaskPage(){
 
 }
-
 
 void MaskPage::on_btn_readImg_clicked(){
     std::cout << "btn_readImg_clicked\n";
@@ -72,6 +79,15 @@ bool MaskPage::loadAndDisplayImage(const QString &filePath) {
         std::cout << "image is Null\n";
         return false;
     }
+
+    // 读取图片
+    _srcImg = cv::imread(filePath.toStdString());
+    if(_srcImg.empty()){
+        std::cout<<"image is Null\n";
+        return false;
+    }
+
+    _mosicalImg = _srcImg.clone();
 
     QPixmap scaledImage = image.scaled(uiMask.label_maskImg->size(),
                                        Qt::KeepAspectRatio,
@@ -179,15 +195,15 @@ cv::Mat globalMosicalAlgoOne(cv::Mat& srcImg,const int threshold){
 
 void MaskPage::on_btn_globalMosicalAlgo1_clicked(){
     // 尝试读取图片，如果失败则显示错误信息并返回
-    cv::Mat img = cv::imread(_mosicalImgPath.c_str());
-    if (img.empty()) {
+    //cv::Mat img = cv::imread(_mosicalImgPath.c_str());
+    if (_mosicalImg.empty()) {
         // 显示错误信息
         std::cerr << "无法读取图像：" << _mosicalImgPath << std::endl;
         return;
     }
 
     if(!isValidInt(uiMask.lineEdit_gloMoAlgoTh->text().toStdString(),
-                   std::min(img.rows,img.cols))){
+                   std::min(_mosicalImg.rows,_mosicalImg.cols))){
         QMessageBox messageBox(this);
         messageBox.setWindowTitle(tr("提示"));
         messageBox.setText(tr("\n     阈值输入错误    "));
@@ -198,30 +214,38 @@ void MaskPage::on_btn_globalMosicalAlgo1_clicked(){
 
     int threshold{uiMask.lineEdit_gloMoAlgoTh->text().toInt()};
 
-    cv::Mat dstImg = globalMosicalAlgoOne(img,threshold);
+    _mosicalImg = globalMosicalAlgoOne(_mosicalImg,threshold);
 
-
-
-    QImage image(dstImg.data, dstImg.cols, dstImg.rows,
-                 dstImg.step, QImage::Format_RGB888);
+    QImage image(_mosicalImg.data, _mosicalImg.cols, _mosicalImg.rows,
+                 _mosicalImg.step, QImage::Format_RGB888);
     QPixmap pixmap = QPixmap::fromImage(image);
     uiMask.label_maskImg->setPixmap(pixmap);
 }
 
 void MaskPage::on_hSlider_gloMoAlgoTh_valueChanged(const int value){
     std::cout<<"changed value : "<<value<<"\n";
-    cv::Mat img = cv::imread(_mosicalImgPath.c_str());
-    if (img.empty()) {
+    //cv::Mat img = cv::imread(_mosicalImgPath.c_str());
+    if (_mosicalImg.empty()) {
         // 显示错误信息
         std::cerr << "无法读取图像：" << _mosicalImgPath << std::endl;
         return;
     }
 
-    int threshold = value * 0.01 * std::min(img.rows,img.cols);
-    cv::Mat dstImg = globalMosicalAlgoOne(img,threshold);
+    int threshold = value * 0.01 * std::min(_mosicalImg.rows,_mosicalImg.cols);
+    _mosicalImg = globalMosicalAlgoOne(_mosicalImg,threshold);
 
-    QImage image(dstImg.data, dstImg.cols, dstImg.rows,
-                 dstImg.step, QImage::Format_RGB888);
+    QImage image(_mosicalImg.data, _mosicalImg.cols, _mosicalImg.rows,
+                 _mosicalImg.step, QImage::Format_RGB888);
     QPixmap pixmap = QPixmap::fromImage(image);
     uiMask.label_maskImg->setPixmap(pixmap);
+}
+
+void MaskPage::mousePressEvent(QMouseEvent *event) {
+
+    std::cout<<"label_maskImg: "<< mapToGlobal(uiMask.label_maskImg->pos()).x()<<"\t"
+    <<mapToGlobal(uiMask.label_maskImg->pos()).y()<<"\ n";
+
+    std::cout<<"mousePressEvent: "<< event->pos().x()<<"\t"
+             <<event->globalPosition().y()<<"\n";
+
 }

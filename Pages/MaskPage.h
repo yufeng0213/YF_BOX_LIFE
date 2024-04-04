@@ -6,7 +6,8 @@
 #define UNTITLED1_MASKPAGE_H
 
 #include "../UI/ui_mask.h"
-
+#include <opencv2/opencv.hpp>
+#include <QMouseEvent>
 class MaskPage: public QMainWindow{
 
 Q_OBJECT
@@ -19,11 +20,14 @@ public:
 private:
     // 新增：用于加载和显示图片的辅助函数
     bool loadAndDisplayImage(const QString &filePath);
+    void mousePressEvent(QMouseEvent *event);
 
 private:
     Ui_MaskWindow uiMask;
 
     std::string _mosicalImgPath;
+    cv::Mat _mosicalImg;
+    cv::Mat _srcImg;
 
 private slots:
     // 读取图片
